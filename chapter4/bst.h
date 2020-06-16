@@ -5,7 +5,7 @@ public:
 	explicit BinarySearchTree(const Comparable & notFound);
 	BinarySearchTree() : root (NULL), ITEM_NOT_FOUND(0) {}
 	BinarySearchTree(const BinarySearchTree & rhs );
-	//~BinarySearchTree();
+	~BinarySearchTree();
 	
 	const Comparable & findMax() const;
 	const Comparable & findMin() const;
@@ -157,3 +157,54 @@ void BinarySearchTree<Comparable>::remove(const Comparable & x)
 	remove(x,root);
 }
 
+
+template <class Comparable>
+BinarySearchTree<Comparable>::~BinarySearchTree()
+{
+	makeEmpty();
+}
+
+
+
+template <class Comparable>
+void BinarySearchTree<Comparable>::makeEmpty(BinaryNode<Comparable>* & t) const
+{
+	if (t != NULL)
+	{
+		makeEmpty(t->left);
+		makeEmpty(t->right);
+		delete t;
+	}
+	t = NULL;
+}
+
+
+template <class Comparable>
+void BinarySearchTree<Comparable>::makeEmpty() 
+{
+	makeEmpty(root);
+}
+
+
+template <class Comparable>
+const BinarySearchTree<Comparable> & BinarySearchTree<Comparable>::operator=(const BinarySearchTree & rhs)
+{
+	if (this != &rhs)
+	{
+		makeEmpty();
+		root = clone(rhs.root);
+	}
+	return *this;
+}
+
+template <class Comparable>
+BinaryNode<Comparable>* BinarySearchTree<Comparable>::clone(BinaryNode<Comparable>* t) const
+{
+	if (t != NULL)
+	{
+		BinaryNode<Comparable>* newnode = new BinaryNode<Comparable>(t->element, clone(t->left), clone(t->right));
+		return newnode;
+		
+	}
+	return NULL;
+}

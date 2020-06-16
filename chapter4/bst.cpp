@@ -19,13 +19,16 @@ int main()
 	tree.insert(100);
 	tree.insert(-19);
 	tree.insert(8);
-	cout<<tree.findMin()<<endl;
-	tree.remove(-19);
-	cout<<tree.findMin()<<endl;
-	tree.insert(-100);
-	cout<<tree.findMin()<<endl;
-	tree.remove(51);
-	cout<<tree.find(23)<<endl;
-	cout<<tree.findMax()<<endl;
+	BinarySearchTree<int> tree2;
+	tree2=tree;
+	cout<<tree2.findMin()<<endl;
+	tree2.remove(-19);
+	cout<<tree2.findMin()<<endl;
+	tree2.insert(-100);
+	cout<<tree2.findMin()<<endl;
+	tree2.remove(51);
+	cout<<tree2.find(23)<<endl;
+	cout<<tree2.findMax()<<endl;
+
 	
 }

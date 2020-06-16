@@ -5,3 +5,11 @@ bst.out: bst.o
 
 bst.o: bst.cpp bst.h bsn.h
 	g++ -c bst.cpp
+	
+avl: avl.out
+	
+avl.out: avl.o
+	g++ avl.o -o avl.out
+
+avl.o: avl.cpp avl.h avlnode.h
+	g++ -c avl.cpp
