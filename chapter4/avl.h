@@ -5,14 +5,17 @@ class AVLTree
 {
 public: 
 	void insert( const Comparable & t);
+	void insertNR (const Comparable & t);
 	const Comparable findMax() const;
 	const Comparable findMin() const;
 	const Comparable find(const Comparable & x) const;
 	void remove(const Comparable & x);
+	~AVLTree<Comparable>();
 	
 	void print() const;
 	AVLTree() : root(NULL) {}
-	
+		
+	void makeEmpty();
 	
 private:
 	AVLNode<Comparable>* root;
@@ -35,6 +38,8 @@ private:
 	void remove(const Comparable & x, AVLNode<Comparable>* & t) const;
 	//const AVLNode<Comparable>* findMinRemove(cosnt AVLNode<Comparable>* t) const;
 	int height(const AVLNode<Comparable>* t);
+
+	void makeEmpty(AVLNode<Comparable>* t);
 };
 
 template <class Comparable>
@@ -227,42 +232,42 @@ const Comparable AVLTree<Comparable>::findMin() const
 template <class Comparable>
 void AVLTree<Comparable>::remove(const Comparable& x, AVLNode<Comparable>* & t) const
 {
-	std::cout<<"here1"<<std::endl;
+	//std::cout<<"here1"<<std::endl;
 	if (x < t-> element)
 	{
-		std::cout<<"here2"<<std::endl;
+		//std::cout<<"here2"<<std::endl;
 		remove(x,t->left);
 		if (height(t->right)-height(t->left) > 1)
 		{
-			std::cout<<"here3"<<std::endl;
+		//	std::cout<<"here3"<<std::endl;
 			//height(t->right->right);
-			std::cout<<"element " << t->right->element<<std::endl;
+		//	std::cout<<"element " << t->right->element<<std::endl;
 			if (height(t->right->left) > height(t->right->right))
 			{
-				std::cout<<"here13"<<std::endl;
+		//		std::cout<<"here13"<<std::endl;
 				doubleRotateWithRightChild(t);
 			}
 			else
 			{
-				std::cout<<"here15"<<std::endl;
+		//		std::cout<<"here15"<<std::endl;
 				rotateWithRightChild(t);
 			}
-			std::cout<<"here5"<<std::endl;
+		//	std::cout<<"here5"<<std::endl;
 		}
 	}
 	else if (x > t->element)
 	{
-		std::cout<<"here7"<<std::endl;
+		//std::cout<<"here7"<<std::endl;
 		remove(x,t->right);
 		if (height(t->left)-height(t->right) > 1)
 		{
-			std::cout<<"here8"<<std::endl;
+		//	std::cout<<"here8"<<std::endl;
 			if (height(t->left->right) > height(t->left->left))
 				doubleRotateWithLeftChild(t);
 			else
 				rotateWithLeftChild(t);
 		}
-		std::cout<<"here9"<<std::endl;
+		//std::cout<<"here9"<<std::endl;
 		
 	}
 	else if (t == NULL)
@@ -286,7 +291,7 @@ void AVLTree<Comparable>::remove(const Comparable& x, AVLNode<Comparable>* & t) 
 		t->element = (elementAt(findMin(t->right)));
 		remove(t->element, t->right);
 	}
-	std::cout<<"here10"<<std::endl;
+	//std::cout<<"here10"<<std::endl;
 	t->height = std::max(height(t->left), height(t->right)) + 1;
 	
 }
@@ -304,4 +309,61 @@ template <class Comparable>
 void AVLTree<Comparable>::remove(const Comparable & x)
 {
 	remove(x, root);
+}
+
+
+template <class Comparable>
+void AVLTree<Comparable>::makeEmpty()
+{
+	makeEmpty(root);
+}
+
+
+template <class Comparable>
+void AVLTree<Comparable>::makeEmpty(AVLNode<Comparable>* t)
+{
+	if (t == NULL)
+		return;
+	makeEmpty(t->right);
+	makeEmpty(t->left);
+	delete t;
+}
+
+
+template <class Comparable>
+AVLTree<Comparable>::~AVLTree()
+{
+	makeEmpty();
+}
+
+template <class Comparable>
+void AVLTree<Comparable>::insertNR(const Comparable & t)
+{
+	if (root == NULL)
+	{
+		root = new AVLNode<Comparable>(t, NULL, NULL, 0);
+		return;
+	}
+	AVLTree<Comparable>* node = root;
+	AVLTree<Comparable>* preNode = NULL;
+	while (node != NULL)
+	{
+		if (t < node->element)
+		{
+			preNode = node;
+			node = node->left;
+		}
+		else if (t > node->element)
+		{
+			preNode = node;
+			node = node->right;
+		}
+		else
+			return;
+		
+	}
+	if (t < preNode->element)
+		t->left = new AVLNode<Comparable>(t, NULL, NULL, 0);
+	else
+		t->right = new AVLNode<Comparable>(t, NULL, NULL, 0);
 }
