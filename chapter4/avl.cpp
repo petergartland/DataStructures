@@ -3,7 +3,7 @@
 #include "avlnode.h"
 #include "avl.h"
 
-
+int i = 5;
 using namespace std;
 
 int main()

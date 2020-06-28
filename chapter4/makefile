@@ -9,7 +9,7 @@ bst.o: bst.cpp bst.h bsn.h
 avl: avl.out
 	
 avl.out: avl.o
-	g++ avl.o -o avl.out
+	g++ avl.o -g -o avl.out
 
 avl.o: avl.cpp avl.h avlnode.h
 	g++ -c avl.cpp
