@@ -14,6 +14,7 @@ public:
 	const HashedObj & find( const HashedObj & x) const;
 	void insert(const HashedObj & x);
 	void remove( const HashedObj & x);
+	void makeEmpty();
 	
 	const HashTable & operator=(const HashTable & rhs);
 private:
@@ -64,6 +65,31 @@ void HashTable<HashedObj>::insert(const HashedObj & x)
 	{
 		theList[index].push_back(x);
 	}
+}
+
+template <class HashedObj>
+void HashTable<HashedObj>::remove(const HashedObj & x)
+{
+	int index = hash(x, theList.size());
+	//std::list<HashedObj> checkList = theList[index];
+	typename std::list<HashedObj>::iterator itr = theList[index].begin();
+	while (itr != theList[index].end() && *itr != x)
+	{
+		itr++;
+	}
+	if (itr != theList[index].end())
+	{
+		std::cout<<1<<std::endl;
+		std::cout<<"deleting :" << *itr<<std::endl;
+		theList[index].erase(itr);
+	}
+}
+
+template <class HashedObj>
+void HashTable<HashedObj>::makeEmpty()
+{
+	for (int i = 0; i < theList.size(); i++)
+		theList[i].clear();
 }
 
 int hash(const std::string & key, int tableSize)
